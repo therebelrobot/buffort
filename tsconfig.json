@@ -15,5 +15,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*.ts", "src/examples/demo.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "src/examples/meshtastic-integration.ts", "src/examples/mqtt-gateway.ts"]
 }
