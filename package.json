@@ -1,0 +1,66 @@
+{
+  "name": "buffort",
+  "version": "0.1.0",
+  "description": "Protobuf-based wire protocol for property mesh communication over LoRa/Meshtastic",
+  "main": "dist/index.js",
+  "scripts": {
+    "proto:generate": "buf generate",
+    "proto:lint": "buf lint",
+    "build": "npm run proto:generate && tsc",
+    "dev": "tsx src/demo.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "protobuf",
+    "meshtastic",
+    "lora",
+    "mesh",
+    "protocol",
+    "iot",
+    "off-grid"
+  ],
+  "author": "therebelrobot",
+  "license": "MIT",
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.12.0"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.69.0",
+    "@bufbuild/protoc-gen-es": "^2.12.0",
+    "@types/node": "^25.9.1",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./proto": "./proto/buffort.proto"
+  },
+  "files": [
+    "dist",
+    "proto",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/therebelrobot/buffort.git"
+  },
+  "homepage": "https://github.com/therebelrobot/buffort#readme",
+  "bugs": {
+    "url": "https://github.com/therebelrobot/buffort/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

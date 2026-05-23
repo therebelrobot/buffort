@@ -1,0 +1,114 @@
+// Buffort — property mesh protocol for LoRa/Meshtastic
+// Designed for 237-byte max Meshtastic packets.
+//
+// All messages wrapped in Envelope with a oneof payload.
+// Unset fields cost zero bytes on the wire.
+
+syntax = "proto3";
+
+package buffort;
+
+// ═══════════════════════════════════════════════════════════════
+// Top-level envelope
+// ═══════════════════════════════════════════════════════════════
+
+message Envelope {
+  uint32 seq = 1;               // monotonic per-sender, for dedup/ordering
+  uint32 timestamp = 2;         // unix seconds
+
+  oneof payload {
+    TextMessage      text        = 10;
+    SensorReading    sensor      = 11;
+    Command          command     = 12;
+    CommandAck       command_ack = 13;
+    StatusUpdate     status      = 14;
+    MqttForward      mqtt        = 15;
+    LocationShare    location    = 16;
+    Alert            alert       = 17;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Message types
+// ═══════════════════════════════════════════════════════════════
+
+message TextMessage {
+  string body = 1;              // max ~220 chars for single packet
+  uint32 reply_to_seq = 2;      // optional: seq being replied to
+}
+
+message SensorReading {
+  string station_id = 1;        // short label: "barn", "well", "gate"
+
+  // Environmental (all x100 to avoid floats)
+  sint32 temp_f     = 2;        // 72.5°F = 7250
+  sint32 humidity   = 3;        // 45.2% = 4520
+  sint32 pressure   = 4;        // x10 hPa, 1013.2 = 10132
+
+  // Power
+  uint32 battery_mv = 5;
+  uint32 solar_mv   = 6;
+
+  // Soil / water
+  uint32 soil_moisture = 7;     // 0-1000 (x10 percent)
+  sint32 water_level   = 8;     // mm, signed for below-grade
+
+  // Wind
+  uint32 wind_speed    = 9;     // x10 mph, 12.3 = 123
+  uint32 wind_dir      = 10;    // degrees 0-359
+}
+
+message Command {
+  string target = 1;            // "gate-north", "pump-well"
+  string action = 2;            // "open", "close", "toggle", "set"
+  string value  = 3;            // optional param
+}
+
+message CommandAck {
+  uint32 cmd_seq = 1;           // seq of the Command being acked
+  bool   success = 2;
+  string error   = 3;
+}
+
+message StatusUpdate {
+  string node_id   = 1;
+  NodeState state  = 2;
+  uint32 uptime_s  = 3;
+  uint32 free_heap = 4;
+  string version   = 5;
+}
+
+enum NodeState {
+  NODE_UNKNOWN  = 0;
+  NODE_OK       = 1;
+  NODE_DEGRADED = 2;
+  NODE_ERROR    = 3;
+  NODE_OFFLINE  = 4;
+}
+
+message MqttForward {
+  string topic   = 1;           // "property/barn/temp"
+  bytes  payload = 2;           // raw MQTT payload
+  bool   retain  = 3;
+  uint32 qos     = 4;
+}
+
+message LocationShare {
+  sint32 latitude_i  = 1;       // lat × 1e7
+  sint32 longitude_i = 2;       // lon × 1e7
+  sint32 altitude_m  = 3;
+  uint32 accuracy_m  = 4;
+  string note        = 5;
+}
+
+message Alert {
+  AlertLevel level = 1;
+  string source    = 2;         // "gate-cam", "smoke-barn"
+  string message   = 3;
+}
+
+enum AlertLevel {
+  ALERT_INFO     = 0;
+  ALERT_WARNING  = 1;
+  ALERT_CRITICAL = 2;
+}
