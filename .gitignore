@@ -2,3 +2,7 @@ node_modules/
 dist/
 *.tgz
 .DS_Store
+*.js
+*.d.ts
+*.js.map
+*.d.ts.map

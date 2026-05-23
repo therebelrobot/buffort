@@ -7,7 +7,7 @@
     "proto:generate": "buf generate",
     "proto:lint": "buf lint",
     "build": "npm run proto:generate && tsc",
-    "dev": "tsx src/demo.ts",
+    "dev": "tsx src/examples/demo.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",

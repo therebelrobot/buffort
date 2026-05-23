@@ -1,7 +1,7 @@
 // demo.ts — Wire size comparison and round-trip test
 // Run: npx tsx src/demo.ts
 
-import { buffort, decode, format, AlertLevel, NodeState } from "../src/codec";
+import { buffort, decode, format, AlertLevel, NodeState } from "../codec";
 
 console.log("╔══════════════════════════════════════════════════════╗");
 console.log("║  Buffort — Wire Size Comparison (proto vs JSON)     ║");
