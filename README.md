@@ -24,7 +24,7 @@ Unset fields cost zero bytes on the wire — a sensor node that only reports tem
 ## Install
 
 ```bash
-npm install buffort
+npm install @therebelrobot/buffort
 ```
 
 Or clone and build from source:
@@ -39,7 +39,7 @@ npm run build
 ## Quick start
 
 ```typescript
-import { buffort, decode, format } from "buffort";
+import { buffort, decode, format } from "@therebelrobot/buffort";
 
 // Encode a text message (returns Uint8Array ready for sendPacket)
 const bytes = buffort.text("heading back, 20 min out");
@@ -97,7 +97,7 @@ buffort.commandAck(cmdSeq, false, "motor jammed");
 Node health from Pis and microcontrollers on the property.
 
 ```typescript
-import { NodeState } from "buffort";
+import { NodeState } from "@therebelrobot/buffort";
 
 buffort.status("shed-pi", NodeState.NODE_OK, {
   uptimeS: 86400,
@@ -137,7 +137,7 @@ buffort.location(44.5, -70.5, {
 High-priority notifications.
 
 ```typescript
-import { AlertLevel } from "buffort";
+import { AlertLevel } from "@therebelrobot/buffort";
 
 buffort.alert(AlertLevel.ALERT_CRITICAL, "smoke-barn", "Smoke detected in east bay");
 buffort.alert(AlertLevel.ALERT_WARNING, "battery-gate", "Below 3.0V");
@@ -149,7 +149,7 @@ Buffort packets ride on a custom `portNum` (256) to stay separate from standard 
 
 ```typescript
 import { MeshDevice } from "@meshtastic/core";
-import { buffort, decode, format } from "buffort";
+import { buffort, decode, format } from "@therebelrobot/buffort";
 
 const BUFFORT_PORT = 256;
 

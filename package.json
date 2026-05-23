@@ -1,5 +1,5 @@
 {
-  "name": "buffort",
+  "name": "@therebelrobot/buffort",
   "version": "0.1.0",
   "description": "Protobuf-based wire protocol for property mesh communication over LoRa/Meshtastic",
   "main": "dist/index.js",
